@@ -1,4 +1,5 @@
 import LoginButton from "@/components/domains/auth/LoginButton";
+import DashBoard from "@/components/domains/dashboard/DashBoard";
 
 export default function Home() {
   return (
@@ -17,9 +18,7 @@ export default function Home() {
       <section style={{ marginTop: "40px" }}>
         {/* ... 서비스 소개 내용 ... */}
         <div>
-          <button className="bg-red-500 rounded-3xl p-2">
-            PR을 날려보세용
-          </button>
+          <DashBoard />
         </div>
       </section>
     </main>
