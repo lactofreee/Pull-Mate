@@ -11,7 +11,7 @@ export default function LoginButton() {
   }
 
   if (session && session.user) {
-    console.log(session.user);
+    console.log(session);
     return (
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         {session.user.image && (
