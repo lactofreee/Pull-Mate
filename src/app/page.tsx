@@ -20,6 +20,7 @@ export default function Home() {
         <div>
           <DashBoard />
         </div>
+        <a href="/my-repositories">내 레포지터리</a>
       </section>
     </main>
   );
