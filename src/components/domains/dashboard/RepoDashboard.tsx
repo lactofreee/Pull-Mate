@@ -1,10 +1,13 @@
 "use client";
 
-import { ChildProcess } from "child_process";
 import Link from "next/link";
 
 type RepoDashboardProps = {
   repo: {
+    watchers_count: ReactNode;
+    forks_count: ReactNode;
+    stargazers_count: ReactNode;
+    description: string;
     full_name: string;
   };
   commits: {
@@ -21,6 +24,7 @@ export default function RepoDashboard({
   commits,
   hasCommits,
 }: RepoDashboardProps) {
+  // console.log(`repo:${repo}`);
   return (
     <div className="space-y-6">
       {/* 1. Repository Header */}
