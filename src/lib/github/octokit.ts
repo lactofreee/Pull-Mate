@@ -4,6 +4,18 @@ export function getOctokit(token: string) {
   return new Octokit({ auth: token });
 }
 
+// 인증된 사용자 정보 조회
+export async function getAuthenticatedUser(token: string) {
+  try {
+    const octokit = new Octokit({ auth: token });
+    const { data } = await octokit.users.getAuthenticated();
+    return data;
+  } catch (error) {
+    console.error("❌ getAuthenticatedUser error:", error);
+    return null;
+  }
+}
+
 // 인증된 사용자 레포 조회
 export async function getUserRepos(
   token: string,

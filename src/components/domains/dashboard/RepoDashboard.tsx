@@ -1,38 +1,46 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import PRForm from "./PRForm";
 
 type RepoDashboardProps = {
   repo: {
-    watchers_count: ReactNode;
-    forks_count: ReactNode;
-    stargazers_count: ReactNode;
-    description: string;
+    watchers_count?: number;
+    forks_count?: number;
+    stargazers_count?: number;
+    description?: string | null;
     full_name: string;
+    html_url?: string;
+    name?: string;
   };
   commits: {
     sha: string;
     message: string;
-    date: string | undefined;
+    date?: string;
     url: string;
   }[];
   hasCommits: boolean;
+  owner: string;
+  token: string;
 };
 
 export default function RepoDashboard({
   repo,
   commits,
   hasCommits,
+  owner,
+  token,
 }: RepoDashboardProps) {
-  // console.log(`repo:${repo}`);
+  const [showPRForm, setShowPRForm] = useState(false);
   return (
     <div className="space-y-6">
-      {/* 1. Repository Header */}
-      <div className="rounded-xl border p-6 shadow-sm bg-white dark:bg-gray-900">
+      {/* 레포지터리 헤더 */}
+      <section className="rounded-xl border p-6 shadow-sm bg-white dark:bg-gray-900">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold">{repo.full_name}</h2>
           <Link
-            href={"/"}
+            href={`${repo.html_url}`}
             target="_blank"
             className="text-sm text-blue-600 hover:underline"
           >
@@ -43,14 +51,14 @@ export default function RepoDashboard({
           {repo.description ?? "No description provided."}
         </p>
         <div className="flex gap-4 mt-4 text-sm text-gray-500">
-          <span>⭐ {repo.stargazers_count}</span>
-          <span>🍴 {repo.forks_count}</span>
-          <span>👀 {repo.watchers_count}</span>
+          <span>⭐ {repo.stargazers_count ?? 0}</span>
+          <span>🍴 {repo.forks_count ?? 0}</span>
+          <span>👀 {repo.watchers_count ?? 0}</span>
         </div>
-      </div>
+      </section>
 
-      {/* 2. Contribution Panel */}
-      <div className="rounded-xl border p-6 shadow-sm bg-white dark:bg-gray-900">
+      {/* 커밋 기여 현황 */}
+      <section className="rounded-xl border p-6 shadow-sm bg-white dark:bg-gray-900">
         <h3 className="text-lg font-semibold mb-3">내 기여 현황</h3>
         {hasCommits ? (
           <div>
@@ -76,18 +84,20 @@ export default function RepoDashboard({
         ) : (
           <p className="text-gray-500">아직 커밋 기록이 없습니다.</p>
         )}
-      </div>
+      </section>
 
-      {/* 3. Pull Request Panel */}
-      <div className="rounded-xl border p-6 shadow-sm bg-white dark:bg-gray-900">
-        <h3 className="text-lg font-semibold mb-3">Pull Request</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          새 기능이나 버그 수정을 제안하려면 PR을 작성하세요.
-        </p>
-        <button className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">
-          PR 작성하기
+      {/* PR 섹션 */}
+      {/* PR 버튼 */}
+      {hasCommits && !showPRForm && (
+        <button
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+          onClick={() => setShowPRForm(true)}
+        >
+          PR 작성
         </button>
-      </div>
+      )}
+      {/* PR 작성 폼 */}
+      {showPRForm && <PRForm token={token} owner={owner} repo={repo.name!} />}
     </div>
   );
 }
